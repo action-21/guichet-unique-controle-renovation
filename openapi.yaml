@@ -1,0 +1,31 @@
+openapi: 3.1.0
+info:
+  title: API publique du Guichet unique de contrôle des travaux de rénovation
+  version: 0.0.1
+  contact:
+    name: Adrien Rosi Dit Rozzi
+    email: adrienrosi@gmail.com
+servers:
+  - url: /
+security:
+  # Stratégie d'authentification France Connect à intégrer pour la production de données
+  - apiKey: []
+paths:
+  /controles:
+    get:
+      summary: Recherche des contrôles effectués dans l'open data
+      operationId: searchControles
+    post:
+      summary: Publication de nouveaux contrôles dans l'open data
+      operationId: publishControles
+  /controles/{uuid}:
+    get:
+      summary: Recherche un contrôle effectué dans l'open data
+      operationId: findControle
+    update:
+      summary: Remplace un contrôle existant dans l'open data
+      operationId: updateControle
+components:
+  schemas:
+    controle:
+      $ref: https://schemas.data.gouv.fr/controle-renovation/controle.schema.yaml
