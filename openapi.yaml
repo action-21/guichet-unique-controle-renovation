@@ -2,30 +2,83 @@ openapi: 3.1.0
 info:
   title: API publique du Guichet unique de contrôle des travaux de rénovation
   version: 0.0.1
-  contact:
-    name: Adrien Rosi Dit Rozzi
-    email: adrienrosi@gmail.com
 servers:
   - url: /
-security:
-  # Stratégie d'authentification France Connect à intégrer pour la production de données
-  - apiKey: []
 paths:
   /controles:
     get:
-      summary: Recherche des contrôles effectués dans l'open data
+      summary: Recherche des contrôles effectués
       operationId: searchControles
+      parameters:
+        - name: reference
+          description: Référence externe
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: organisme_controle
+          description: SIREN de l'organisme de contrôle
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: rnb_id
+          description: Identifiant du bâtiment dans le Référentiel National des Bâtiments
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: ban_id
+          description: Identifiant de l'adresse dans la Base Adresse Nationale (BAN)
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: travaux[]
+          description: Liste des travaux contrôlés
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/controle"
+        "400":
+          description: Bad request
+        "404":
+          description: Not found
     post:
-      summary: Publication de nouveaux contrôles dans l'open data
+      summary: Publication de nouveaux contrôles
       operationId: publishControles
-  /controles/{uuid}:
-    get:
-      summary: Recherche un contrôle effectué dans l'open data
-      operationId: findControle
-    update:
-      summary: Remplace un contrôle existant dans l'open data
-      operationId: updateControle
+      security:
+        - apiKey: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/controle"
+      responses:
+        "201":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/controle"
+        "422":
+          description: Bad request
 components:
+  securitySchemes:
+    apiKey:
+      type: apiKey
+      in: header
+      name: Authorization
   schemas:
     controle:
-      $ref: https://schemas.data.gouv.fr/controle-renovation/controle.schema.yaml
+      $ref: https://raw.githubusercontent.com/action-21/guichet-unique-controle-renovation-schemas/refs/heads/main/schema.yaml

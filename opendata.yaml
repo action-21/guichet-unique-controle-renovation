@@ -1,0 +1,8 @@
+title: Données ouvertes des contrôles de travaux de rénovation énergétique
+owner: France Rénov'
+licence: https://www.etalab.gouv.fr/licence-ouverte-open-licence
+home: https://data.gouv.fr/dataservices/api-controle-travaux
+versions:
+  current:
+    schema: https://raw.githubusercontent.com/action-21/guichet-unique-controle-renovation-schemas/refs/heads/main/schema.yaml
+    url: https://api.example.fr/controles
